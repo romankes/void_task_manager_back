@@ -1,2 +1,2 @@
 export { User } from './namespace';
-export { UserModel } from './schema';
+export { UserModel } from './model';

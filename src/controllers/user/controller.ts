@@ -3,8 +3,8 @@ import { User } from '@/models';
 import { BaseTypes } from '@/types';
 import { AppController } from '../app';
 
-export class UserController extends AppController<User.Item> {
-  constructor(service: BaseTypes.Service<User.Item>, name: string) {
+export class UserController extends AppController<'user', User.Item> {
+  constructor(service: BaseTypes.Service<User.Item, 'user'>, name: string) {
     super(service, name);
   }
 

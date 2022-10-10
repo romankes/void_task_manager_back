@@ -12,32 +12,34 @@ export class AuthController {
     this.service = service;
   }
 
-  private setCookies(token: string, res: BaseTypes.BaseResponse) {
-    res.cookie('auth', token, {
-      httpOnly: true,
-      signed: true,
-    });
-  }
+  private setCookies = (token: string, res: BaseTypes.BaseResponse) => {
+    if (token) {
+      res?.cookie('auth', token, {
+        httpOnly: true,
+        signed: true,
+      });
+    }
+  };
 
-  async signIn(
+  signIn = async (
     req: BaseTypes.BaseRequest<Auth.SignInBody>,
     res: BaseTypes.BaseResponse,
-  ) {
+  ) => {
     try {
       this.setCookies(await this.service.signIn(req.body), res);
 
       res.sendStatus(HttpStatusCode.OK);
     } catch (e) {
       logger.err(`Error sign in auth controller ${e}`);
-
+      res.sendStatus(400);
       //TODO: throw bad status code
     }
-  }
+  };
 
-  async signUp(
+  signUp = async (
     req: BaseTypes.BaseRequest<Auth.SignUpBody>,
     res: BaseTypes.BaseResponse,
-  ) {
+  ) => {
     try {
       this.setCookies(await this.service.signUp(req.body), res);
 
@@ -47,5 +49,5 @@ export class AuthController {
 
       //TODO: throw bad status code
     }
-  }
+  };
 }

@@ -21,7 +21,7 @@ app.use(cookieParser('void_task_manager'));
 
 morgan.token('body', (req: Request) => JSON.stringify(req.body));
 app.use(morgan(':method :url :body - :response-time ms '));
-mongoose.connect('mongodb://localhost:27017/void_crm');
+mongoose.connect('mongodb://localhost:27017/void_task_manager');
 
 app.use(routes);
 

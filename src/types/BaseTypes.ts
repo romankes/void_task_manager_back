@@ -9,7 +9,9 @@ export namespace BaseTypes {
   export type BaseResponse<
     R = {},
     L = {
-      user: User.Item;
+      user: User.Item & {
+        hasProjects: boolean;
+      };
     },
   > = Response<R, L>;
 
@@ -18,7 +20,22 @@ export namespace BaseTypes {
   };
   export type ShowPayload<T = {}> = T & ShowParams;
 
-  export type Service<T> = {
+  export type IndexParams = {
+    page: number;
+    perPage: number;
+  };
+  export type IndexPayload = IndexParams & {
+    user: Id;
+  };
+
+  export type CreateBody<T, N extends string> = Record<N, T>;
+  export type CreatePayload<T, N extends string> = CreateBody<T, N> & {
+    user: Id;
+  };
+
+  export type Service<T, N extends string> = {
     show: ({ id }: ShowPayload) => Promise<T | null>;
+    index: ({ user }: IndexPayload) => Promise<T[]>;
+    create: ({ user }: CreatePayload<T, N>) => Promise<T | null>;
   };
 }

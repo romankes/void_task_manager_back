@@ -8,12 +8,12 @@ export class AuthService {
     const doc = await UserModel.findOne({ email: user.email });
 
     //TODO: add custom message
-    if (!doc) throw new Error();
+    if (!doc) throw new Error('User is null');
 
     const compared = await compare(doc.password, user.password);
 
     //TODO: add custom message
-    if (!compared) throw new Error();
+    if (!compared) throw new Error('Password don`t match');
 
     return await jwt.sign({
       _id: doc._id,
