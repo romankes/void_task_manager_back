@@ -12,6 +12,7 @@ const projectRoutes = Router();
 const controller = new ProjectController(new ProjectService(), 'project');
 
 projectRoutes.get('/', controller.index);
+projectRoutes.get('/:id', controller.show);
 projectRoutes.post('/', controller.create);
 
 export { projectRoutes };

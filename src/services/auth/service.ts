@@ -1,7 +1,7 @@
 import { jwt } from '@/helpers';
 import { Auth, UserModel } from '@/models';
 
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 export class AuthService {
   async signIn({ user }: Auth.SignInBody) {
@@ -28,14 +28,16 @@ export class AuthService {
     //TODO: add custom message
     if (isExist) throw new Error();
 
-    const doc = await UserModel.create(user);
+    const password = await hash(user.password, 12);
+
+    const doc = await UserModel.create({ ...user, password });
 
     if (!doc) throw new Error();
 
     return await jwt.sign({
       _id: doc._id,
       email: doc.email,
-      password: doc.password,
+      password,
     });
   }
 }

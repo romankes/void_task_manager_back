@@ -6,14 +6,12 @@ export class ProjectService
   implements BaseTypes.Service<Project.Item, 'project'>
 {
   async show({ id }: BaseTypes.ShowPayload): Promise<Project.Item | null> {
-    // const doc = await UserModel.findById(id);
+    const doc = await ProjectModel.findById(id);
 
-    // //TODO: add error with message
-    // if (!doc) throw new Error();
+    //TODO: add error with message
+    if (!doc) throw new Error('Project not found');
 
-    // return doc;
-
-    return null;
+    return doc;
   }
 
   async index({ user }: BaseTypes.IndexPayload): Promise<Project.Item[]> {
