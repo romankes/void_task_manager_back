@@ -6,8 +6,8 @@ export namespace Task {
     title: string;
     description: string;
     date: Date;
-    completed: boolean;
-    duration: number;
+    startDate: Date;
+    endDate: Date;
     user: User.Item;
     project: Project.Item;
   };

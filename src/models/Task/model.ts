@@ -15,13 +15,13 @@ const TaskSchema = new Schema(
       type: Date,
       required: 'Date is required',
     },
-    completed: {
-      type: Boolean,
-      default: false,
+    startDate: {
+      type: Date,
+      default: null,
     },
-    duration: {
-      type: Number,
-      default: 0,
+    endDate: {
+      type: Date,
+      default: null,
     },
     user: {
       ref: 'User',

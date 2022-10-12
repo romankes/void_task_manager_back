@@ -10,7 +10,9 @@ export class AuthService {
     //TODO: add custom message
     if (!doc) throw new Error('User is null');
 
-    const compared = await compare(doc.password, user.password);
+    console.log(doc.password, user.password);
+
+    const compared = await compare(user.password, doc.password);
 
     //TODO: add custom message
     if (!compared) throw new Error('Password don`t match');
