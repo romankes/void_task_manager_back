@@ -4,7 +4,7 @@ import { BaseTypes } from '@/types';
 
 export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
   async show({ id }: BaseTypes.ShowPayload): Promise<Task.Item | null> {
-    const doc = await TaskModel.findById(id);
+    const doc = await TaskModel.findById(id, '-user').populate('project');
 
     //TODO: add error with message
     if (!doc) throw new Error('Task not found');
@@ -12,10 +12,35 @@ export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
     return doc;
   }
 
-  async index({ user }: BaseTypes.IndexPayload): Promise<Task.Item[]> {
-    const projects = await TaskModel.find({ user }, '-user');
+  async index({
+    user,
+    endDate,
+  }: BaseTypes.IndexPayload<Task.IndexParams>): Promise<{
+    [key: string]: Task.Item[];
+  }> {
+    // const tasks = await TaskModel.find({ user }, '-user');
+    const tasks = await TaskModel.find(
+      {
+        date: { $gte: new Date(), $lt: new Date(endDate) },
+        user: user._id,
+      },
+      '-user',
+      { sort: { date: 1 } },
+    ).populate('project');
 
-    return projects;
+    const groupedTasks: { [key: string]: Task.Item[] } = tasks.reduce(
+      (groups, item) => ({
+        ...groups,
+        [item.toJSON().date.toISOString()]: [
+          ...(groups[item.toJSON().date.toISOString() as keyof typeof groups] ||
+            []),
+          item,
+        ],
+      }),
+      {},
+    );
+
+    return groupedTasks;
   }
 
   async create({

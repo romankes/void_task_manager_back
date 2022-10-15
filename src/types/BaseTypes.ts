@@ -24,9 +24,10 @@ export namespace BaseTypes {
     page: number;
     perPage: number;
   };
-  export type IndexPayload = IndexParams & {
-    user: Id;
-  };
+  export type IndexPayload<T = {}> = T &
+    IndexParams & {
+      user: Id;
+    };
 
   export type CreateBody<T, N extends string> = Record<N, T>;
   export type CreatePayload<T, N extends string> = CreateBody<T, N> & {
@@ -35,7 +36,7 @@ export namespace BaseTypes {
 
   export type Service<T, N extends string> = {
     show: ({ id }: ShowPayload) => Promise<T | null>;
-    index: ({ user }: IndexPayload) => Promise<T[]>;
+    index: ({ user }: IndexPayload) => Promise<T[] | { [key: string]: T[] }>;
     create: ({ user }: CreatePayload<T, N>) => Promise<T | null>;
   };
 }
