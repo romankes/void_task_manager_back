@@ -34,9 +34,18 @@ export class ProjectService
     return doc;
   }
 
-  update(
-    payload: BaseTypes.UpdatePayload<Project.Item, 'project'>,
-  ): Promise<Project.Item | null> {
-    return null;
+  async update({
+    id,
+    project,
+    user,
+  }: BaseTypes.UpdatePayload<
+    Project.Item,
+    'project'
+  >): Promise<Project.Item | null> {
+    const doc = await ProjectModel.findOne({ _id: id, user }, project);
+
+    if (!doc) throw new Error('Project did not find');
+
+    return await ProjectModel.findOne({ _id: id, user });
   }
 }

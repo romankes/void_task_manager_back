@@ -15,14 +15,17 @@ export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
   async index({
     user,
     date,
+    endDate,
+    startDate,
   }: BaseTypes.IndexPayload<Task.IndexParams>): Promise<{
     [key: string]: Task.Item[];
   }> {
-    // const tasks = await TaskModel.find({ user }, '-user');
     const tasks = await TaskModel.find(
       {
         date: { $gte: new Date(), $lt: new Date(date) },
         user: user._id,
+        startDate: startDate === 'true' ? { $ne: null } : null,
+        endDate: endDate === 'true' ? { $ne: null } : null,
       },
       '-user',
       { sort: { date: 1 } },
