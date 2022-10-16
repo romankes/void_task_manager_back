@@ -22,4 +22,10 @@ export class UserServices implements BaseTypes.Service<User.Item, 'user'> {
   >): Promise<User.Item | null> {
     return null;
   }
+
+  update(
+    payload: BaseTypes.UpdatePayload<User.Item, 'user'>,
+  ): Promise<User.Item | null> {
+    return null;
+  }
 }

@@ -34,9 +34,15 @@ export namespace BaseTypes {
     user: Id;
   };
 
+  export type UpdateBody<T, N extends string> = Record<N, T>;
+  export type UpdateParams = { id: string };
+  export type UpdatePayload<T, N extends string> = UpdateBody<T, N> &
+    UpdateParams & { user: Id };
+
   export type Service<T, N extends string> = {
-    show: ({ id }: ShowPayload) => Promise<T | null>;
-    index: ({ user }: IndexPayload) => Promise<T[] | { [key: string]: T[] }>;
-    create: ({ user }: CreatePayload<T, N>) => Promise<T | null>;
+    show: (payload: ShowPayload) => Promise<T | null>;
+    index: (payload: IndexPayload) => Promise<T[] | { [key: string]: T[] }>;
+    create: (payload: CreatePayload<T, N>) => Promise<T | null>;
+    update: (payload: UpdatePayload<T, N>) => Promise<T | null>;
   };
 }

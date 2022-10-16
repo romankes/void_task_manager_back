@@ -49,4 +49,26 @@ export class AppController<N extends string, T = {}> {
       //   handleError(res, errors.paramsIsInvalid());
     }
   };
+
+  update = async (
+    req: BaseTypes.BaseRequest<
+      BaseTypes.UpdateBody<T, N>,
+      {},
+      BaseTypes.UpdateParams
+    >,
+    res: BaseTypes.BaseResponse,
+  ) => {
+    try {
+      res.send(
+        await this.service.update({
+          ...req.body,
+          ...req.params,
+          user: res.locals.user._id,
+        }),
+      );
+    } catch (e) {
+      logger.err(`Error update ${this.name} controller ${e}`);
+      //   handleError(res, errors.paramsIsInvalid());
+    }
+  };
 }

@@ -13,6 +13,6 @@ export namespace Task {
   };
 
   export type IndexParams = {
-    endDate: string;
+    date: string;
   };
 }

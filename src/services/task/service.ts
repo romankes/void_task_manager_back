@@ -14,14 +14,14 @@ export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
 
   async index({
     user,
-    endDate,
+    date,
   }: BaseTypes.IndexPayload<Task.IndexParams>): Promise<{
     [key: string]: Task.Item[];
   }> {
     // const tasks = await TaskModel.find({ user }, '-user');
     const tasks = await TaskModel.find(
       {
-        date: { $gte: new Date(), $lt: new Date(endDate) },
+        date: { $gte: new Date(), $lt: new Date(date) },
         user: user._id,
       },
       '-user',
@@ -52,5 +52,17 @@ export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
     if (!doc) throw new Error('Task did not create');
 
     return doc;
+  }
+
+  async update({
+    id,
+    task,
+    user,
+  }: BaseTypes.UpdatePayload<Task.Item, 'task'>): Promise<Task.Item | null> {
+    const doc = await TaskModel.findOneAndUpdate({ _id: id, user }, task);
+
+    if (!doc) throw new Error('Task did not find');
+
+    return await TaskModel.findOne({ _id: id, user });
   }
 }

@@ -10,5 +10,6 @@ const taskRoutes = Router();
 taskRoutes.get('/', controller.index);
 taskRoutes.get('/:id', controller.show);
 taskRoutes.post('/', controller.create);
+taskRoutes.patch('/:id', controller.update);
 
 export { taskRoutes };

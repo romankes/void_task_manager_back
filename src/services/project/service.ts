@@ -33,4 +33,10 @@ export class ProjectService
 
     return doc;
   }
+
+  update(
+    payload: BaseTypes.UpdatePayload<Project.Item, 'project'>,
+  ): Promise<Project.Item | null> {
+    return null;
+  }
 }
