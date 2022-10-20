@@ -1,6 +1,8 @@
-import { Project, ProjectModel } from '@/models';
+import { Project, ProjectModel, TaskModel } from '@/models';
 
 import { BaseTypes } from '@/types';
+
+const COEFFICIENT_FOR_CONVERT_TO_HORS = 3600000;
 
 export class ProjectService
   implements BaseTypes.Service<Project.Item, 'project'>
@@ -11,7 +13,20 @@ export class ProjectService
     //TODO: add error with message
     if (!doc) throw new Error('Project not found');
 
-    return doc;
+    const tasks = await TaskModel.find({ project: doc._id });
+
+    const duration = tasks
+      .map(({ endDate, startDate }) =>
+        !endDate || !startDate
+          ? 0
+          : new Date(endDate).getTime() - new Date(startDate).getTime(),
+      )
+      .reduce((prev, curr) => curr + prev, 0);
+
+    return {
+      ...(doc.toJSON() as Project.Item),
+      spentHors: Math.ceil(duration / COEFFICIENT_FOR_CONVERT_TO_HORS),
+    };
   }
 
   async index({ user }: BaseTypes.IndexPayload): Promise<Project.Item[]> {

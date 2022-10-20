@@ -14,4 +14,8 @@ routes.use('/users', auth, userRoutes);
 routes.use('/projects', auth, projectRoutes);
 routes.use('/tasks', auth, taskRoutes);
 
+routes.use((e) => {
+  console.log(e);
+});
+
 export { routes };

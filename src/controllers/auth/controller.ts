@@ -50,4 +50,14 @@ export class AuthController {
       //TODO: throw bad status code
     }
   };
+
+  logout = async (req: BaseTypes.BaseRequest, res: BaseTypes.BaseResponse) => {
+    try {
+      res.clearCookie('auth');
+
+      res.sendStatus(HttpStatusCode.NO_CONTENT);
+    } catch (e) {
+      logger.err(`Error logout auth controller ${e}`);
+    }
+  };
 }

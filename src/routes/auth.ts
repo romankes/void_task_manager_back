@@ -12,5 +12,6 @@ const authRoutes = Router();
 
 authRoutes.post('/signIn', controller.signIn);
 authRoutes.post('/signUp', controller.signUp);
+authRoutes.delete('/logout', controller.logout);
 
 export { authRoutes };

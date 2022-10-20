@@ -9,5 +9,13 @@ export namespace Project {
     description: string;
     completed: boolean;
     maxHours: number;
+
+    spentHors?: number;
+  };
+
+  //TODO: update base controller for detail
+
+  export type Detail = Item & {
+    spentHors?: number;
   };
 }

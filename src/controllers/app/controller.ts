@@ -1,4 +1,4 @@
-import { logger } from '@/helpers';
+import { handleError, logger } from '@/helpers';
 import { BaseTypes } from '@/types';
 
 export class AppController<N extends string, T = {}> {
@@ -18,7 +18,7 @@ export class AppController<N extends string, T = {}> {
       res.json(await this.service.show(req.params));
     } catch (e) {
       logger.err(`Error show ${this.name} controller ${e}`);
-      //   handleError(res, errors.paramsIsInvalid());
+      handleError(res, 'bad_params');
     }
   };
 
@@ -32,7 +32,7 @@ export class AppController<N extends string, T = {}> {
       );
     } catch (e) {
       logger.err(`Error index ${this.name} controller ${e}`);
-      //   handleError(res, errors.paramsIsInvalid());
+      handleError(res, 'bad_params');
     }
   };
 
@@ -46,7 +46,7 @@ export class AppController<N extends string, T = {}> {
       );
     } catch (e) {
       logger.err(`Error create ${this.name} controller ${e}`);
-      //   handleError(res, errors.paramsIsInvalid());
+      handleError(res, 'bad_params');
     }
   };
 
@@ -68,7 +68,7 @@ export class AppController<N extends string, T = {}> {
       );
     } catch (e) {
       logger.err(`Error update ${this.name} controller ${e}`);
-      //   handleError(res, errors.paramsIsInvalid());
+      handleError(res, 'bad_params');
     }
   };
 }

@@ -14,8 +14,7 @@ export const auth = async (
     const token = req.signedCookies['auth'];
 
     if (!token) {
-      //TODO: custom error
-      //   return handleError(res, errors.unauthorized());
+      throw new Error('Unauthorized');
     }
     const data = (await jwt.decode(token)) as { _id: string };
 
@@ -23,8 +22,7 @@ export const auth = async (
       const user = await UserModel.findById(data._id);
 
       if (!user) {
-        //TODO: custom error
-        //   return handleError(res, errors.unauthorized());
+        throw new Error('User not found');
       }
 
       const projects = await ProjectModel.find({ user: user._id });
@@ -32,11 +30,9 @@ export const auth = async (
       res.locals.user = { ...user.toJSON(), hasProjects: !!projects.length };
       next();
     } else {
-      //TODO: custom error
-      //   return handleError(res, errors.unauthorized());
+      throw new Error('Decode error');
     }
   } catch (err) {
-    //TODO: custom error
-    // return handleError(res, errors.unauthorized());
+    res.sendStatus(401);
   }
 };
