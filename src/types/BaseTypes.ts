@@ -39,10 +39,16 @@ export namespace BaseTypes {
   export type UpdatePayload<T, N extends string> = UpdateBody<T, N> &
     UpdateParams & { user: Id };
 
-  export type Service<T, N extends string> = {
-    show: (payload: ShowPayload) => Promise<T | null>;
+  export type RemoveParams = { id: Id };
+  export type RemovePayload = RemoveParams & {
+    user: Id;
+  };
+
+  export type Service<T, D, N extends string> = {
+    show: (payload: ShowPayload) => Promise<D | null>;
     index: (payload: IndexPayload) => Promise<T[] | { [key: string]: T[] }>;
-    create: (payload: CreatePayload<T, N>) => Promise<T | null>;
-    update: (payload: UpdatePayload<T, N>) => Promise<T | null>;
+    create: (payload: CreatePayload<T, N>) => Promise<D | null>;
+    update: (payload: UpdatePayload<T, N>) => Promise<D | null>;
+    remove: (payload: RemovePayload) => Promise<T>;
   };
 }

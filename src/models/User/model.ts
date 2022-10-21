@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { ProjectModel } from '../Project';
+import { TaskModel } from '../Task';
 import { User } from './namespace';
 
 const UserSchema = new Schema(
@@ -19,5 +21,12 @@ const UserSchema = new Schema(
   },
   { timestamps: true },
 );
+
+UserSchema.post('findOneAndRemove', async (doc) => {
+  await Promise.all([
+    ProjectModel.deleteMany({ user: doc._id }),
+    TaskModel.deleteMany({ user: doc._id }),
+  ]);
+});
 
 export const UserModel = model<User.Item>('User', UserSchema);

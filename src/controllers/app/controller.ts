@@ -1,11 +1,11 @@
 import { handleError, logger } from '@/helpers';
 import { BaseTypes } from '@/types';
 
-export class AppController<N extends string, T = {}> {
-  protected service: BaseTypes.Service<T, N>;
+export class AppController<N extends string, D = {}, T = {}> {
+  protected service: BaseTypes.Service<T, D, N>;
   protected name: string;
 
-  constructor(service: BaseTypes.Service<T, N>, name: string) {
+  constructor(service: BaseTypes.Service<T, D, N>, name: string) {
     this.name = name;
     this.service = service;
   }
@@ -27,7 +27,7 @@ export class AppController<N extends string, T = {}> {
     res: BaseTypes.BaseResponse,
   ) => {
     try {
-      res.send(
+      res.json(
         await this.service.index({ ...req.query, user: res.locals.user._id }),
       );
     } catch (e) {
@@ -41,7 +41,7 @@ export class AppController<N extends string, T = {}> {
     res: BaseTypes.BaseResponse,
   ) => {
     try {
-      res.send(
+      res.json(
         await this.service.create({ ...req.body, user: res.locals.user._id }),
       );
     } catch (e) {
@@ -59,7 +59,7 @@ export class AppController<N extends string, T = {}> {
     res: BaseTypes.BaseResponse,
   ) => {
     try {
-      res.send(
+      res.json(
         await this.service.update({
           ...req.body,
           ...req.params,
@@ -68,6 +68,20 @@ export class AppController<N extends string, T = {}> {
       );
     } catch (e) {
       logger.err(`Error update ${this.name} controller ${e}`);
+      handleError(res, 'bad_params');
+    }
+  };
+
+  remove = async (
+    req: BaseTypes.BaseRequest<{}, {}, BaseTypes.RemoveParams>,
+    res: BaseTypes.BaseResponse,
+  ) => {
+    try {
+      res.json(
+        await this.service.remove({ ...req.params, user: res.locals.user._id }),
+      );
+    } catch (e) {
+      logger.err(`Error remove ${this.name} controller ${e}`);
       handleError(res, 'bad_params');
     }
   };

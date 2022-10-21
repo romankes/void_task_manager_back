@@ -11,5 +11,6 @@ taskRoutes.get('/', controller.index);
 taskRoutes.get('/:id', controller.show);
 taskRoutes.post('/', controller.create);
 taskRoutes.patch('/:id', controller.update);
+taskRoutes.delete('/:id', controller.remove);
 
 export { taskRoutes };

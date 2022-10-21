@@ -2,11 +2,12 @@ import { logger } from '@/helpers';
 import { User, UserModel } from '@/models';
 import { BaseTypes } from '@/types';
 
-export class UserServices implements BaseTypes.Service<User.Item, 'user'> {
-  async show({ id }: BaseTypes.ShowPayload): Promise<User.Item | null> {
+export class UserServices
+  implements BaseTypes.Service<User.Item, User.Detail, 'user'>
+{
+  async show({ id }: BaseTypes.ShowPayload): Promise<User.Detail | null> {
     const doc = await UserModel.findById(id);
 
-    //TODO: add error with message
     if (!doc) throw new Error();
 
     return doc;
@@ -17,15 +18,19 @@ export class UserServices implements BaseTypes.Service<User.Item, 'user'> {
   }
 
   async create({}: BaseTypes.CreatePayload<
-    User.Item,
+    User.Detail,
     'user'
   >): Promise<User.Item | null> {
     return null;
   }
 
   update(
-    payload: BaseTypes.UpdatePayload<User.Item, 'user'>,
+    payload: BaseTypes.UpdatePayload<User.Detail, 'user'>,
   ): Promise<User.Item | null> {
+    return null;
+  }
+
+  remove({}: BaseTypes.RemovePayload): Promise<User.Item | null> {
     return null;
   }
 }

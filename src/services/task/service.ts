@@ -2,11 +2,12 @@ import { Task, TaskModel } from '@/models';
 
 import { BaseTypes } from '@/types';
 
-export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
+export class TaskService
+  implements BaseTypes.Service<Task.Item, Task.Detail, 'task'>
+{
   async show({ id }: BaseTypes.ShowPayload): Promise<Task.Item | null> {
     const doc = await TaskModel.findById(id, '-user').populate('project');
 
-    //TODO: add error with message
     if (!doc) throw new Error('Task not found');
 
     return doc;
@@ -68,4 +69,15 @@ export class TaskService implements BaseTypes.Service<Task.Item, 'task'> {
 
     return await TaskModel.findOne({ _id: id, user });
   }
+
+  remove = async ({
+    id,
+    user,
+  }: BaseTypes.RemovePayload): Promise<Task.Item | null> => {
+    const doc = await TaskModel.findOneAndRemove({ _id: id, user });
+
+    if (!doc) throw new Error('Task not found');
+
+    return null;
+  };
 }

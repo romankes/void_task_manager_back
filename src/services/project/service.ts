@@ -5,15 +5,14 @@ import { BaseTypes } from '@/types';
 const COEFFICIENT_FOR_CONVERT_TO_HORS = 3600000;
 
 export class ProjectService
-  implements BaseTypes.Service<Project.Item, 'project'>
+  implements BaseTypes.Service<Project.Item, Project.Detail, 'project'>
 {
-  async show({ id }: BaseTypes.ShowPayload): Promise<Project.Item | null> {
+  async show({ id }: BaseTypes.ShowPayload): Promise<Project.Detail | null> {
     const doc = await ProjectModel.findById(id);
 
-    //TODO: add error with message
     if (!doc) throw new Error('Project not found');
 
-    const tasks = await TaskModel.find({ project: doc._id });
+    const tasks = await TaskModel.find({ project: doc._id }, '-user -project');
 
     const duration = tasks
       .map(({ endDate, startDate }) =>
@@ -26,6 +25,7 @@ export class ProjectService
     return {
       ...(doc.toJSON() as Project.Item),
       spentHors: Math.ceil(duration / COEFFICIENT_FOR_CONVERT_TO_HORS),
+      tasks,
     };
   }
 
@@ -41,7 +41,7 @@ export class ProjectService
   }: BaseTypes.CreatePayload<
     Project.Item,
     'project'
-  >): Promise<Project.Item | null> {
+  >): Promise<Project.Detail | null> {
     const doc = await ProjectModel.create({ ...project, user: user });
 
     if (!doc) throw new Error('Project did not create');
@@ -63,4 +63,15 @@ export class ProjectService
 
     return await ProjectModel.findOne({ _id: id, user });
   }
+
+  remove = async ({
+    id,
+    user,
+  }: BaseTypes.RemovePayload): Promise<Project.Item | null> => {
+    const doc = await ProjectModel.findOneAndRemove({ _id: id, user });
+
+    if (!doc) throw new Error('project not found');
+
+    return doc;
+  };
 }

@@ -12,6 +12,8 @@ export namespace Task {
     project: Project.Item;
   };
 
+  export type Detail = Item;
+
   export type IndexParams = {
     date: string;
     startDate: string;

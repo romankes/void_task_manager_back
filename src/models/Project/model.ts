@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { TaskModel } from '../Task';
 import { Project } from './namespace';
 
 //TODO: prior
@@ -29,5 +30,9 @@ const ProjectSchema = new Schema(
   },
   { timestamps: true },
 );
+
+ProjectSchema.post('findOneAndRemove', async (doc) => {
+  await Promise.all([await TaskModel.deleteMany({ project: doc._id })]);
+});
 
 export const ProjectModel = model<Project.Item>('Project', ProjectSchema);

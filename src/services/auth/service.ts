@@ -7,14 +7,12 @@ export class AuthService {
   async signIn({ user }: Auth.SignInBody) {
     const doc = await UserModel.findOne({ email: user.email });
 
-    //TODO: add custom message
     if (!doc) throw new Error('User is null');
 
     console.log(doc.password, user.password);
 
     const compared = await compare(user.password, doc.password);
 
-    //TODO: add custom message
     if (!compared) throw new Error('Password don`t match');
 
     return await jwt.sign({
@@ -27,7 +25,6 @@ export class AuthService {
   async signUp({ user }: Auth.SignUpBody) {
     const isExist = await UserModel.exists({ email: user.email });
 
-    //TODO: add custom message
     if (isExist) throw new Error();
 
     const password = await hash(user.password, 12);

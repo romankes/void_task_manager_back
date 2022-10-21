@@ -7,4 +7,6 @@ export namespace User {
     password: string;
     username: string;
   };
+
+  export type Detail = Item;
 }

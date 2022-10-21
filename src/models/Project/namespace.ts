@@ -1,4 +1,5 @@
 import { BaseTypes } from '@/types';
+import { Task } from '../Task';
 import { User } from '../User';
 
 export namespace Project {
@@ -17,5 +18,7 @@ export namespace Project {
 
   export type Detail = Item & {
     spentHors?: number;
+
+    tasks?: Task.Item[];
   };
 }

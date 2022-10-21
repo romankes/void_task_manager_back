@@ -4,7 +4,7 @@ import { AppController } from '../app';
 
 export class ProjectController extends AppController<'project', Project.Item> {
   constructor(
-    service: BaseTypes.Service<Project.Item, 'project'>,
+    service: BaseTypes.Service<Project.Item, Project.Detail, 'project'>,
     name: string,
   ) {
     super(service, name);
