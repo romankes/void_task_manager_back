@@ -14,7 +14,7 @@ export class TaskService
   }
 
   async index({
-    user,
+    userId,
     date,
     endDate,
     startDate,
@@ -24,7 +24,7 @@ export class TaskService
     const tasks = await TaskModel.find(
       {
         date: { $gte: new Date(), $lt: new Date(date) },
-        user: user._id,
+        user: userId,
         startDate: startDate === 'true' ? { $ne: null } : null,
         endDate: endDate === 'true' ? { $ne: null } : null,
       },
@@ -49,9 +49,9 @@ export class TaskService
 
   async create({
     task,
-    user,
+    userId,
   }: BaseTypes.CreatePayload<Task.Item, 'task'>): Promise<Task.Item | null> {
-    const doc = await TaskModel.create({ ...task, user: user });
+    const doc = await TaskModel.create({ ...task, user: userId });
 
     if (!doc) throw new Error('Task did not create');
 
@@ -61,20 +61,23 @@ export class TaskService
   async update({
     id,
     task,
-    user,
+    userId,
   }: BaseTypes.UpdatePayload<Task.Item, 'task'>): Promise<Task.Item | null> {
-    const doc = await TaskModel.findOneAndUpdate({ _id: id, user }, task);
+    const doc = await TaskModel.findOneAndUpdate(
+      { _id: id, user: userId },
+      task,
+    );
 
     if (!doc) throw new Error('Task did not find');
 
-    return await TaskModel.findOne({ _id: id, user });
+    return await TaskModel.findOne({ _id: id, use: userId });
   }
 
   remove = async ({
     id,
-    user,
+    userId,
   }: BaseTypes.RemovePayload): Promise<Task.Item | null> => {
-    const doc = await TaskModel.findOneAndRemove({ _id: id, user });
+    const doc = await TaskModel.findOneAndRemove({ _id: id, user: userId });
 
     if (!doc) throw new Error('Task not found');
 

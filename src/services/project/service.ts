@@ -29,20 +29,20 @@ export class ProjectService
     };
   }
 
-  async index({ user }: BaseTypes.IndexPayload): Promise<Project.Item[]> {
-    const projects = await ProjectModel.find({ user }, '-user');
+  async index({ userId }: BaseTypes.IndexPayload): Promise<Project.Item[]> {
+    const projects = await ProjectModel.find({ user: userId }, '-user');
 
     return projects;
   }
 
   async create({
     project,
-    user,
+    userId,
   }: BaseTypes.CreatePayload<
     Project.Item,
     'project'
   >): Promise<Project.Detail | null> {
-    const doc = await ProjectModel.create({ ...project, user: user });
+    const doc = await ProjectModel.create({ ...project, user: userId });
 
     if (!doc) throw new Error('Project did not create');
 
@@ -52,23 +52,23 @@ export class ProjectService
   async update({
     id,
     project,
-    user,
+    userId,
   }: BaseTypes.UpdatePayload<
     Project.Item,
     'project'
   >): Promise<Project.Item | null> {
-    const doc = await ProjectModel.findOne({ _id: id, user }, project);
+    const doc = await ProjectModel.findOne({ _id: id, user: userId }, project);
 
     if (!doc) throw new Error('Project did not find');
 
-    return await ProjectModel.findOne({ _id: id, user });
+    return await ProjectModel.findOne({ _id: id, user: userId });
   }
 
   remove = async ({
     id,
-    user,
+    userId,
   }: BaseTypes.RemovePayload): Promise<Project.Item | null> => {
-    const doc = await ProjectModel.findOneAndRemove({ _id: id, user });
+    const doc = await ProjectModel.findOneAndRemove({ _id: id, user: userId });
 
     if (!doc) throw new Error('project not found');
 

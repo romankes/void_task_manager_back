@@ -28,7 +28,7 @@ export class AppController<N extends string, D = {}, T = {}> {
   ) => {
     try {
       res.json(
-        await this.service.index({ ...req.query, user: res.locals.user._id }),
+        await this.service.index({ ...req.query, userId: res.locals.user._id }),
       );
     } catch (e) {
       logger.err(`Error index ${this.name} controller ${e}`);
@@ -42,7 +42,7 @@ export class AppController<N extends string, D = {}, T = {}> {
   ) => {
     try {
       res.json(
-        await this.service.create({ ...req.body, user: res.locals.user._id }),
+        await this.service.create({ ...req.body, userId: res.locals.user._id }),
       );
     } catch (e) {
       logger.err(`Error create ${this.name} controller ${e}`);
@@ -63,7 +63,7 @@ export class AppController<N extends string, D = {}, T = {}> {
         await this.service.update({
           ...req.body,
           ...req.params,
-          user: res.locals.user._id,
+          userId: res.locals.user._id,
         }),
       );
     } catch (e) {
@@ -78,7 +78,10 @@ export class AppController<N extends string, D = {}, T = {}> {
   ) => {
     try {
       res.json(
-        await this.service.remove({ ...req.params, user: res.locals.user._id }),
+        await this.service.remove({
+          ...req.params,
+          userId: res.locals.user._id,
+        }),
       );
     } catch (e) {
       logger.err(`Error remove ${this.name} controller ${e}`);

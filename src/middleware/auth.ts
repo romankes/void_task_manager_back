@@ -19,7 +19,9 @@ export const auth = async (
     const data = (await jwt.decode(token)) as { _id: string };
 
     if (data) {
-      const user = await UserModel.findById(data._id);
+      const user = await UserModel.findById(data._id).populate('avatar');
+
+      console.log(user);
 
       if (!user) {
         throw new Error('User not found');

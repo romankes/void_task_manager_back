@@ -1,4 +1,5 @@
 import { BaseTypes } from '@/types';
+import { Asset } from '../Asset';
 
 export namespace User {
   export type Item = {
@@ -6,6 +7,8 @@ export namespace User {
     email: string;
     password: string;
     username: string;
+
+    avatar: Asset.Item;
   };
 
   export type Detail = Item;

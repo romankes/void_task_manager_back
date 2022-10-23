@@ -26,22 +26,22 @@ export namespace BaseTypes {
   };
   export type IndexPayload<T = {}> = T &
     IndexParams & {
-      user: Id;
+      userId: Id;
     };
 
   export type CreateBody<T, N extends string> = Record<N, T>;
   export type CreatePayload<T, N extends string> = CreateBody<T, N> & {
-    user: Id;
+    userId: Id;
   };
 
   export type UpdateBody<T, N extends string> = Record<N, T>;
   export type UpdateParams = { id: string };
   export type UpdatePayload<T, N extends string> = UpdateBody<T, N> &
-    UpdateParams & { user: Id };
+    UpdateParams & { userId: Id };
 
   export type RemoveParams = { id: Id };
   export type RemovePayload = RemoveParams & {
-    user: Id;
+    userId: Id;
   };
 
   export type Service<T, D, N extends string> = {
